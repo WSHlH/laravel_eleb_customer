@@ -14,3 +14,9 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/businessList','ApiController@businessList');
+Route::get('/business','ApiController@business');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

@@ -26,16 +26,16 @@ window.api = {
 
 
 
+    // 获取购物车数据接口
+    cart: '/api/cart',
+    // 保存购物车接口
+    addCart: '/api/addCart',
   // 获得订单列表接口
   orderList: '/orderList.php',
   // 添加订单接口
   addOrder: '/addorder.php',
   // 获得指定订单接口
   order: '/order.php',
-  // 保存购物车接口
-  addCart: '/addCart.php',
-  // 获取购物车数据接口
-  cart: '/cart.php',
   // 支付接口
   pay: '/pay.php'
 };

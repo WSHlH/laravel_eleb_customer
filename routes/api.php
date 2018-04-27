@@ -47,3 +47,9 @@ Route::post('/editAddress','AddressController@editAddress');
 //删除收货地址
 Route::get('/addressDelete','AddressController@addressDelete');
 
+//添加购物车
+Route::post('/addCart','CartsController@store');
+//显示购物车内容
+Route::get('/cart','CartsController@show');
+
+

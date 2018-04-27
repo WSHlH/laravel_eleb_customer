@@ -657,7 +657,7 @@ div.some_bar span[data-v-745b577a] {
 }
 .business_box .business_top .font_words .fw_top .fw_top_word {
   margin-left: 2rem;
-  color: #fff;
+  color: #3597ef;
 }
 .business_box .business_top .font_words .fw_top .fw_top_word h3 {
   font-size: .7rem;
@@ -667,14 +667,14 @@ div.some_bar span[data-v-745b577a] {
 }
 .business_box .business_top .font_words .fw_top .shop_activity {
   font-size: .3rem;
-  color: #fff;
+  color: #ef4715;
   line-height: .8rem;
 }
 .business_box .business_top .font_words .fw_top .shop_activity .new_user {
   display: inline-block;
   width: .35rem;
   height: .35rem;
-  background: #f07373;
+  background: #ceced5;
   line-height: .35rem;
   text-align: center;
   vertical-align: middle;

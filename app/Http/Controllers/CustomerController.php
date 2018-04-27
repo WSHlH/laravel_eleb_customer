@@ -6,12 +6,19 @@ use App\Model\Customer;
 use App\Sms;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends Controller
 {
 
+    /**
+     * 发送验证码
+     * @param Request $request
+     * @return array
+     */
     function sendSms(Request $request) {
 
         $params = array ();
@@ -80,6 +87,11 @@ class CustomerController extends Controller
         }
     }
 
+    /**
+     * 验证并注册用户
+     * @param Request $request
+     * @return array
+     */
     public function regist(Request $request)
     {
 //        return $request->input();
@@ -90,7 +102,7 @@ class CustomerController extends Controller
             $validator = Validator::make($request->all(), [
                 'username'=>'required|max:10|unique:customers',
                 'password'=>'required|max:16|min:3',
-                'tel'=>'required|unique:customers|regex:/^1[3458][0-9]\d{4,8}$/',
+                'tel'=>'required|unique:customers|regex:/^1[3458][0-9]\d{8}$/',
             ]);
 
             if ($validator->fails()) {
@@ -110,31 +122,8 @@ else{
         }
     }
 
-
-
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
-    {
-//
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
+     * 用户验证登录
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -161,6 +150,85 @@ else{
         }
     }
 
+    public function changePwd(Request $request)
+    {
+//        return $request->input();
+        //        验证
+        $validator = Validator::make($request->all(),[
+            'oldPassword'=>'required|max:16|min:3',
+            'newPassword'=>'required|max:16|min:3',
+        ]);
+        if ($validator->fails()){
+            $error = $validator->errors()->first();
+            return $error;
+        }
+//        $user = DB::table('customers')->find(Auth::user()->id);
+        if (Hash::check($request->oldPassword,Auth::user()->password)){
+            DB::table('customers')->where('id',Auth::user()->id)->update(['password'=>$request->newPassword]);
+            return ['status'=>'true','massage'=>'密码重置成功!'];
+        }else{
+            return ['status'=>'false','massage'=>'原密码错误,密码重置失败'];
+        }
+    }
+
+    public function forgetPwd(Request $request)
+    {
+//        return $request->input();
+        //验证
+        $validator = Validator::make($request->all(),[
+            'tel'=>'required|regex:/^1[3458][0-9]\d{8}$/',
+            'password'=>'required|max:16|min:3',
+        ]);
+        if ($validator->fails()){
+            $error = $validator->errors()->first();
+            return $error;
+        }
+        $redis = Redis::get('code'.$request->tel);
+        if($redis==$request->sms){
+            $user = DB::table('customers')->where('tel',$request->tel)->get();
+            if ($user!=null){//手机存在
+                DB::table('customers')->where('tel',$request->tel)
+                    ->update([//修改密码
+                    'password'=>bcrypt($request->password),
+                ]);
+                return ['status'=>'true','massage'=>'密码重置成功!'];
+            }
+        }else{
+            return ['status'=>'false','massage'=>'验证码错误,密码重置失败'];
+        }
+    }
+
+    /**
+     *修改密码
+     * @param  \App\Model\Customer  $customer
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Customer $customer)
+    {
+
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create(Request $request)
+    {
+//
+    }
+
+
     /**
      * Display the specified resource.
      *
@@ -172,16 +240,7 @@ else{
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Model\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Customer $customer)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.

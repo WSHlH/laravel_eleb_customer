@@ -6,31 +6,36 @@ window.api = {
   // 注册接口
   regist: '/api/regist',
   // 修改密码接口
-  changePassword: '/changePassword.php',
+  changePassword: '/api/changePassword',
   // 忘记密码接口
-  forgetPassword: '/forgetPassword.php',
+  forgetPassword: '/api/forgetPassword',
   // 地址列表接口
-  addressList: '/addressList.php',
+  addressList: '/api/addressList',
   // 指定地址接口
-  address: '/address.php',
+  address: '/api/address',
+  // 删除指定商家接口
+  addressDelete: '/api/addressDelete',
   // 保存新增地址接口
-  addAddress: '/addAddress.php',
+  addAddress: '/api/addAddress',
   // 保存修改地址接口
-  editAddress: '/editAddress.php',
-  // 获得订单列表接口
-  orderList: '/orderList.php',
-  // 获得指定订单接口
-  order: '/order.php',
+  editAddress: '/api/editAddress',
   // 获得商家列表接口
   businessList: '/api/businessList',
   // 获得指定商家接口
   business: '/api/business',
+
+
+
+  // 获得订单列表接口
+  orderList: '/orderList.php',
+  // 添加订单接口
+  addOrder: '/addorder.php',
+  // 获得指定订单接口
+  order: '/order.php',
   // 保存购物车接口
   addCart: '/addCart.php',
   // 获取购物车数据接口
   cart: '/cart.php',
-  // 添加订单接口
-  addOrder: '/addorder.php',
   // 支付接口
   pay: '/pay.php'
 };

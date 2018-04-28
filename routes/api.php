@@ -52,4 +52,11 @@ Route::post('/addCart','CartsController@store');
 //显示购物车内容
 Route::get('/cart','CartsController@show');
 
+//获得订单列表接口
+Route::get('/orderList','OrderController@index');
+//获得指定订单接口
+Route::get('/order','OrderController@order');
+//添加订单接口
+Route::post('/addOrder','OrderController@store');
+
 

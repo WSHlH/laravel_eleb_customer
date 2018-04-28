@@ -23,19 +23,19 @@ window.api = {
   businessList: '/api/businessList',
   // 获得指定商家接口
   business: '/api/business',
+  // 获取购物车数据接口
+  cart: '/api/cart',
+  // 保存购物车接口
+  addCart: '/api/addCart',
 
 
-
-    // 获取购物车数据接口
-    cart: '/api/cart',
-    // 保存购物车接口
-    addCart: '/api/addCart',
   // 获得订单列表接口
-  orderList: '/orderList.php',
+  orderList: '/api/orderList',
   // 添加订单接口
-  addOrder: '/addorder.php',
+  addOrder: '/api/addOrder',
   // 获得指定订单接口
-  order: '/order.php',
+  order: '/api/order',
+
   // 支付接口
   pay: '/pay.php'
 };

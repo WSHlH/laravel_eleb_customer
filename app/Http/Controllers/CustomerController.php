@@ -164,7 +164,7 @@ else{
         }
 //        $user = DB::table('customers')->find(Auth::user()->id);
         if (Hash::check($request->oldPassword,Auth::user()->password)){
-            DB::table('customers')->where('id',Auth::user()->id)->update(['password'=>$request->newPassword]);
+            DB::table('customers')->where('id',Auth::user()->id)->update(['password'=>bcrypt($request->newPassword)]);
             return ['status'=>'true','massage'=>'密码重置成功!'];
         }else{
             return ['status'=>'false','massage'=>'原密码错误,密码重置失败'];

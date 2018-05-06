@@ -6,9 +6,12 @@ use App\Model\Address;
 use App\Model\Carts;
 use App\Model\Order;
 use App\Model\Order_goods;
+use App\Sms;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redis;
 
 class OrderController extends Controller
 {
@@ -38,6 +41,19 @@ class OrderController extends Controller
     public function create()
     {
         //
+    }
+
+
+
+    public function mail($name,$email)
+    {
+        Mail::send(
+            'mail',//邮件视图模板
+            ['name'=>$name],
+            function ($message) use($email){
+                $message->to($email)->subject('您有新的订单!');
+            }
+        );
     }
 
     /**
@@ -90,7 +106,10 @@ class OrderController extends Controller
             }
         });
         $order_id = Order::where('order_code',$order_code)->first()->id;
-        return ["status"=>"true","message"=>"添加成功","order_id"=>$order_id];
+        //生成订单后,向商家发送邮件
+        $tel = DB::table('businesses')->where('id',$shop->id)->first()->phone;
+        $this->mail($shop->shop_name,$tel);
+        return ["status"=>"true","message"=>"下单成功","order_id"=>$order_id];
     }
 
     /**
@@ -111,6 +130,24 @@ class OrderController extends Controller
         return $order;
     }
 
+
+    public function pay()
+    {
+        if (false){
+            return [
+                "status"=> "false",
+                "message"=> "支付失败"
+            ];
+        }
+        /**$order = Order::find($request->id)->update([
+        'order_status'=>1,
+        ]);*/
+        return [
+            "status"=> "true",
+            "message"=> "支付成功"
+        ];
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -121,6 +158,9 @@ class OrderController extends Controller
     {
 
     }
+
+
+
 
     /**
      * Update the specified resource in storage.

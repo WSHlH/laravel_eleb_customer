@@ -35,7 +35,9 @@ window.api = {
   addOrder: '/api/addOrder',
   // 获得指定订单接口
   order: '/api/order',
+  //下单成功后发送短信提示
+  orderSuccess: '/api/orderSuccess',
 
   // 支付接口
-  pay: '/pay.php'
+  pay: '/api/pay'
 };

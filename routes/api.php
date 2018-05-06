@@ -22,7 +22,7 @@ Route::get('/businessList','ApiController@businessList');
 //商家详细信息接口
 Route::get('/business','ApiController@business');
 
-//发送短信接口
+//发送短信验证码接口
 Route::get('/sms','CustomerController@sendSms');
 //注册用户接口
 Route::post('/regist','CustomerController@regist');
@@ -58,5 +58,9 @@ Route::get('/orderList','OrderController@index');
 Route::get('/order','OrderController@order');
 //添加订单接口
 Route::post('/addOrder','OrderController@store');
+//订单支付接口
+Route::post('/pay','OrderController@pay');
+//下单成功后发送短信提示
+Route::get('/orderSuccess','OrderController@sendSms');
 
 

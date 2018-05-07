@@ -27,6 +27,8 @@ class CreateOrdersTable extends Migration
             $table->string('city');
             $table->string('area');
             $table->string('detail_address');
+            $table->decimal('order_price');
+            $table->unsignedInteger('customer_id');
             $table->timestamps();
             $table->engine='InnoDB';
         });

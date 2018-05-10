@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\SphinxClient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -10,12 +11,42 @@ class ApiController extends Controller
     //商家接口
     public function businessList()
     {
+        if (isset($_GET['keyword'])){
+            $cl = new SphinxClient();
+            $cl->SetServer ( '127.0.0.1', 9312);
+//$cl->SetServer ( '10.6.0.6', 9312);
+//$cl->SetServer ( '10.6.0.22', 9312);
+//$cl->SetServer ( '10.8.8.2', 9312);
+            $cl->SetConnectTimeout ( 10 );
+            $cl->SetArrayResult ( true );
+// $cl->SetMatchMode ( SPH_MATCH_ANY);
+            $cl->SetMatchMode ( SPH_MATCH_EXTENDED2);
+            $cl->SetLimits(0, 1000);
+            $info = $_GET['keyword'];
+            $res = $cl->Query($info, 'shop');//shop
+//print_r($cl);
+            if ($res['total']){
+                $res = collect($res['matches'])->pluck('id')->toArray();//collect()将数组转化为集合
+            }
+//            print_r($res);
+            $businessLists = DB::table('business_lists')->whereIn('id',$res)->get();
+//        dd($businessLists);
+            foreach($businessLists as $businessList){
+                $businessList->distance=666;
+            }
+            return $businessLists;
+        }
         $businessLists = DB::table('business_lists')->get();
 //        dd($businessLists);
         foreach($businessLists as $businessList){
             $businessList->distance=666;
         }
         return $businessLists;
+    }
+
+    public function search($keyword)
+    {
+
     }
 
     public function business(Request $request)
